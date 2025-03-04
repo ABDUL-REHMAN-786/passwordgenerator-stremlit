@@ -15,27 +15,27 @@ def check_password_strength(pwd):
     score = 0
     feedback = []
 
-    if len(password) >= 8:
+    if len(pwd) >= 8:
         score += 1
     else:
         feedback.append("Increase password length to at least 8 characters.")
 
-    if re.search(r"[A-Z]", password):
+    if re.search(r"[A-Z]", pwd):
         score += 1
     else:
         feedback.append("Add at least one uppercase letter (A-Z).")
 
-    if re.search(r"[a-z]", password):
+    if re.search(r"[a-z]", pwd):
         score += 1
     else:
         feedback.append("Add at least one lowercase letter (a-z).")
 
-    if re.search(r"\d", password):
+    if re.search(r"\d", pwd):
         score += 1
     else:
         feedback.append("Include at least one digit (0-9).")
 
-    if re.search(r"[!@#$%^&*]", password):
+    if re.search(r"[!@#$%^&*]", pwd):
         score += 1
     else:
         feedback.append("Use at least one special character (!@#$%^&*).")
@@ -123,9 +123,6 @@ if st.button("Generate Password"):
     new_password = generate_password(length, use_digits, use_specials)
     st.code(new_password, language="plaintext")
 
-    if st.button("Copy to Clipboard"):
-        st.text("✅ Password copied!")
-
+# Add spacing before footer
 st.write("---")
-st.caption("Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒")
-
+st.caption("Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒")  
