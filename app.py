@@ -76,9 +76,10 @@ current_time = datetime.now(karachi_tz).strftime("%I:%M %p, %d %B %Y")
 st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
 
 try:
-    weather_response = requests.get("https://wttr.in/Karachi?format=%t")
+    weather_response = requests.get("https://wttr.in/Karachi?format=%C+%t")
     if weather_response.status_code == 200:
-        st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🌡️ Karachi Temperature: {weather_response.text}</b></div>", unsafe_allow_html=True)
+        temperature = weather_response.text.replace("F", "°C")
+        st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🌡️ Karachi Temperature: {temperature}</b></div>", unsafe_allow_html=True)
     else:
         st.markdown("<div style='text-align: center; font-size: 24px;'><b>🌡️ Unable to fetch temperature data.</b></div>", unsafe_allow_html=True)
 except:
