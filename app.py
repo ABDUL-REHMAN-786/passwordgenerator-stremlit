@@ -78,7 +78,10 @@ st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🕒 {current
 try:
     weather_response = requests.get("https://wttr.in/Karachi?format=%C+%t")
     if weather_response.status_code == 200:
-        temperature = weather_response.text.replace("F", "°C")
+        temperature = weather_response.text.split()[1]
+        if "°F" in temperature:
+            temp_celsius = round((float(temperature.replace("°F", "")) - 32) * 5/9, 1)
+            temperature = f"{temp_celsius}°C"
         st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🌡️ Karachi Temperature: {temperature}</b></div>", unsafe_allow_html=True)
     else:
         st.markdown("<div style='text-align: center; font-size: 24px;'><b>🌡️ Unable to fetch temperature data.</b></div>", unsafe_allow_html=True)
