@@ -70,7 +70,7 @@ def check_breach(password):
 st.title("🔒 Password Manager")
 
 # Display Current Time and Temperature
-st.header("Karachi")
+st.header("")
 karachi_tz = pytz.timezone("Asia/Karachi")
 current_time = datetime.now(karachi_tz).strftime("%I:%M %p, %d %B %Y")
 st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
