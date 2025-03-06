@@ -809,7 +809,6 @@
 # st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
 
 
-
 import streamlit as st
 import re
 import random
@@ -947,6 +946,14 @@ st.markdown("""
             text-align: center;
         }
 
+        /* Red color for the time section */
+        .time-section {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            font-size: 32px;
+        }
+
         /* Footer style */
         .footer {
             text-align: center;
@@ -984,7 +991,7 @@ st.markdown('<div class="center-text">🔒 Password Manager</div>', unsafe_allow
 st.header("")
 karachi_tz = pytz.timezone("Asia/Karachi")
 current_time = datetime.now(karachi_tz).strftime("%I:%M %p, %d %B %Y")
-st.markdown(f"<div class='center-text'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
+st.markdown(f"<div class='time-section'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
 
 # API Key for OpenWeatherMap
 API_KEY = "ea815a44ac089b6f28d755bacec67f30"
@@ -1065,30 +1072,3 @@ else:
 
 # Footer
 st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
