@@ -729,7 +729,7 @@ current_time = datetime.now(karachi_tz).strftime("%I:%M %p, %d %B %Y")
 st.markdown(f"<div style='text-align: center; font-size: 24px;'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
 
 # API Key for OpenWeatherMap
-API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"
+API_KEY = "ea815a44ac089b6f28d755bacec67f30"
 
 # Fetch Weather Data
 try:
