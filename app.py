@@ -1613,7 +1613,6 @@
 # st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
 
 
-
 import streamlit as st
 import re
 import random
@@ -1624,6 +1623,7 @@ import time
 from cryptography.fernet import Fernet
 from datetime import datetime
 import pytz
+import pyperclip  # For clipboard copy functionality
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="🔒 Password Manager", layout="centered")
@@ -1797,29 +1797,6 @@ st.markdown("""
 # Centered Title
 st.markdown('<div class="center-text">🔒 Password Manager</div>', unsafe_allow_html=True)
 
-# Display Current Time and Temperature using OpenWeatherMap API
-st.header("")
-karachi_tz = pytz.timezone("Asia/Karachi")
-current_time = datetime.now(karachi_tz).strftime("%I:%M %p, %d %B %Y")
-st.markdown(f"<div class='time-section'><b>🕒 {current_time}</b></div>", unsafe_allow_html=True)
-
-# API Key for OpenWeatherMap
-API_KEY = "ea815a44ac089b6f28d755bacec67f30"
-
-# Fetch Weather Data
-try:
-    weather_url = f"http://api.openweathermap.org/data/2.5/weather?q=Karachi&appid={API_KEY}&units=metric"
-    weather_response = requests.get(weather_url)
-    if weather_response.status_code == 200:
-        weather_data = weather_response.json()
-        temperature = weather_data['main']['temp']
-        weather_condition = weather_data['weather'][0]['description']
-        st.markdown(f"<div class='temp-section'><b>🌡️ Karachi Temperature: {temperature}°C, {weather_condition.capitalize()}</b></div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div class='temp-section'><b>🌡️ Unable to fetch temperature data.</b></div>", unsafe_allow_html=True)
-except Exception as e:
-    st.markdown("<div class='temp-section'><b>🌡️ Unable to fetch temperature data.</b></div>", unsafe_allow_html=True)
-
 # Password Strength Checker
 st.markdown('<div class="section-header section-header-password-strength">Password Strength Meter</div>', unsafe_allow_html=True)
 password = st.text_input("Enter Password:", type="password")
@@ -1840,57 +1817,36 @@ if password:
         st.write("🔹 Suggestions to Improve:")
         for tip in feedback:
             st.write(f"   - {tip}")
-    if st.button("Check Breach Status", key="breach_button", help="Check if your password has been leaked", 
-                 use_container_width=True, 
-                 args=({"class": "red-button"})):
-        with st.spinner("Checking for breaches..."):
-            time.sleep(1.5)
-            if check_breach(password):
-                st.error("⚠️ This password has been leaked in data breaches. Please change it!")
-            else:
-                st.success("✅ This password has not been found in breaches!")
-    st.session_state.password_history.append({"password": password, "strength": strength})
 
-# Password Generator
+# Password Generator Section
 st.markdown('<div class="section-header">Secure Password Generator</div>', unsafe_allow_html=True)
 length = st.slider("Select Password Length:", min_value=8, max_value=32, value=12)
 use_digits = st.checkbox("Include Numbers", value=True)
 use_specials = st.checkbox("Include Special Characters", value=True)
+
+# Generate Password Button
 if st.button("Generate Password", key="generate_button", use_container_width=True, 
+             help="Generate a strong password", 
              args=({"class": "red-button"})):
     with st.spinner("Generating a secure password..."):
         time.sleep(1.5)
     new_password = generate_password(length, use_digits, use_specials)
     st.code(new_password, language="plaintext")
+    st.session_state.generated_password = new_password  # Store the generated password
     st.balloons()
-st.write("Use a password manager to store your generated passwords securely.")
 
-# Password History Section
-st.markdown('<div class="section-header">📜 Password History</div>', unsafe_allow_html=True)
-st.subheader("Stored Passwords")
-max_history = st.number_input("Number of Passwords to Show:", min_value=1, max_value=100, value=10)
-password_search = st.text_input("Search Password History:")
-if st.session_state.password_history:
-    filtered_history = [entry for entry in st.session_state.password_history if password_search in entry["password"]]
-    for idx, entry in enumerate(reversed(filtered_history[-max_history:])):
-        with st.expander(f"🔐 Password {idx + 1}"):
-            st.write(f"**Password:** `{entry['password']}`")
-            st.write(f"**Strength:** {entry['strength']}")
-    if st.button("Clear History", key="clear_history", help="Clear all stored passwords", 
-                 use_container_width=True, 
+# Copy Password Button
+if 'generated_password' in st.session_state:
+    if st.button("Copy Password", key="copy_button", use_container_width=True, 
+                 help="Copy the generated password to clipboard", 
                  args=({"class": "red-button"})):
-        st.session_state.password_history = []
-        st.success("✅ Password history cleared!")
-        st.rerun()
-else:
-    st.info("No password history available.")
+        pyperclip.copy(st.session_state.generated_password)  # Copy password to clipboard
+        st.success("✅ Password copied to clipboard!")
+
+st.write("Use a password manager to store your generated passwords securely.")
 
 # Footer
 st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
-
-
-
-
 
 
 
