@@ -1840,7 +1840,9 @@ if password:
         st.write("🔹 Suggestions to Improve:")
         for tip in feedback:
             st.write(f"   - {tip}")
-    if st.button("Check Breach Status", key="breach_button", help="Check if your password has been leaked", use_container_width=True):
+    if st.button("Check Breach Status", key="breach_button", help="Check if your password has been leaked", 
+                 use_container_width=True, 
+                 args=({"class": "red-button"})):
         with st.spinner("Checking for breaches..."):
             time.sleep(1.5)
             if check_breach(password):
@@ -1854,7 +1856,8 @@ st.markdown('<div class="section-header">Secure Password Generator</div>', unsaf
 length = st.slider("Select Password Length:", min_value=8, max_value=32, value=12)
 use_digits = st.checkbox("Include Numbers", value=True)
 use_specials = st.checkbox("Include Special Characters", value=True)
-if st.button("Generate Password", key="generate_button", use_container_width=True):
+if st.button("Generate Password", key="generate_button", use_container_width=True, 
+             args=({"class": "red-button"})):
     with st.spinner("Generating a secure password..."):
         time.sleep(1.5)
     new_password = generate_password(length, use_digits, use_specials)
@@ -1873,7 +1876,9 @@ if st.session_state.password_history:
         with st.expander(f"🔐 Password {idx + 1}"):
             st.write(f"**Password:** `{entry['password']}`")
             st.write(f"**Strength:** {entry['strength']}")
-    if st.button("Clear History", key="clear_history", help="Clear all stored passwords", use_container_width=True):
+    if st.button("Clear History", key="clear_history", help="Clear all stored passwords", 
+                 use_container_width=True, 
+                 args=({"class": "red-button"})):
         st.session_state.password_history = []
         st.success("✅ Password history cleared!")
         st.rerun()
@@ -1882,11 +1887,6 @@ else:
 
 # Footer
 st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
-
-
-
-
-
 
 
 
