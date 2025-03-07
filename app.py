@@ -2827,7 +2827,7 @@ def check_breach(password):
 
 # Function to get weather information for Karachi
 def get_weather_data(city="Karachi"):
-    api_key = "YOUR_API_KEY"  # Replace with your OpenWeatherMap API Key
+    api_key = "ea815a44ac089b6f28d755bacec67f30"  # Replace with your OpenWeatherMap API Key
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
     response = requests.get(url)
     data = response.json()
