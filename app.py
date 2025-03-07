@@ -1615,30 +1615,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import streamlit as st
 import re
 import random
@@ -1896,4 +1872,27 @@ else:
     st.info("No password history available.")
 
 # Footer
-st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div
+st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
