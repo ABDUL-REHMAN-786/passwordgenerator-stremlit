@@ -1613,6 +1613,32 @@
 # st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import streamlit as st
 import re
 import random
@@ -1623,7 +1649,6 @@ import time
 from cryptography.fernet import Fernet
 from datetime import datetime
 import pytz
-import pyperclip  # For clipboard copy functionality
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="🔒 Password Manager", layout="centered")
@@ -1835,30 +1860,40 @@ if st.button("Generate Password", key="generate_button", use_container_width=Tru
     st.session_state.generated_password = new_password  # Store the generated password
     st.balloons()
 
-# Copy Password Button
-if 'generated_password' in st.session_state:
-    if st.button("Copy Password", key="copy_button", use_container_width=True, 
-                 help="Copy the generated password to clipboard", 
-                 args=({"class": "red-button"})):
-        pyperclip.copy(st.session_state.generated_password)  # Copy password to clipboard
-        st.success("✅ Password copied to clipboard!")
+    # Provide download link for the generated password
+    password_file = f"{new_password}.txt"
+    st.download_button(
+        label="Download Password",
+        data=new_password,
+        file_name=password_file,
+        mime="text/plain",
+        use_container_width=True,
+        key="download_button",
+        help="Click to download your generated password",
+        args=({"class": "red-button"})
+    )
 
 st.write("Use a password manager to store your generated passwords securely.")
 
+# Password History Section
+st.markdown('<div class="section-header">📜 Password History</div>', unsafe_allow_html=True)
+st.subheader("Stored Passwords")
+max_history = st.number_input("Number of Passwords to Show:", min_value=1, max_value=100, value=10)
+password_search = st.text_input("Search Password History:")
+if st.session_state.password_history:
+    filtered_history = [entry for entry in st.session_state.password_history if password_search in entry["password"]]
+    for idx, entry in enumerate(reversed(filtered_history[-max_history:])):
+        with st.expander(f"🔐 Password {idx + 1}"):
+            st.write(f"**Password:** `{entry['password']}`")
+            st.write(f"**Strength:** {entry['strength']}")
+    if st.button("Clear History", key="clear_history", help="Clear all stored passwords", 
+                 use_container_width=True, 
+                 args=({"class": "red-button"})):
+        st.session_state.password_history = []
+        st.success("✅ Password history cleared!")
+        st.rerun()
+else:
+    st.info("No password history available.")
+
 # Footer
-st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div
