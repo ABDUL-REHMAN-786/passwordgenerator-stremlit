@@ -3643,6 +3643,288 @@
 
 
 
+# import streamlit as st
+# import re
+# import random
+# import string
+# import time
+# from cryptography.fernet import Fernet
+# from datetime import datetime
+# import pytz
+
+# # Set Streamlit page configuration
+# st.set_page_config(page_title="🔒 Password Manager", layout="centered")
+
+# # AES-256 Encryption Key (Generate once and store securely)
+# KEY = Fernet.generate_key()
+# cipher = Fernet(KEY)
+
+# # Initialize session state for password history if not exists
+# if "password_history" not in st.session_state:
+#     st.session_state.password_history = []
+
+# # Function to check password strength
+# def check_password_strength(pwd):
+#     score = 0
+#     feedback = []
+#     if len(pwd) >= 8:
+#         score += 1
+#     else:
+#         feedback.append("Increase password length to at least 8 characters.")
+#     if re.search(r"[A-Z]", pwd):
+#         score += 1
+#     else:
+#         feedback.append("Add at least one uppercase letter (A-Z).")
+#     if re.search(r"[a-z]", pwd):
+#         score += 1
+#     else:
+#         feedback.append("Add at least one lowercase letter (a-z).")
+#     if re.search(r"\d", pwd):
+#         score += 1
+#     else:
+#         feedback.append("Include at least one digit (0-9).")
+#     if re.search(r"[!@#$%^&*]", pwd):
+#         score += 1
+#     else:
+#         feedback.append("Use at least one special character (!@#$%^&*).")
+#     if score == 5:
+#         return "Strong", score, feedback
+#     elif score >= 3:
+#         return "Moderate", score, feedback
+#     else:
+#         return "Weak", score, feedback
+
+# # Function to generate a strong random password
+# def generate_password(length=12, use_digits=True, use_specials=True, use_upper=True, use_lower=True):
+#     characters = ""
+#     if use_upper:
+#         characters += string.ascii_uppercase
+#     if use_lower:
+#         characters += string.ascii_lowercase
+#     if use_digits:
+#         characters += string.digits
+#     if use_specials:
+#         characters += "!@#$%^&*"
+    
+#     return ''.join(random.choice(characters) for _ in range(length))
+
+# # Function to get the current time in Karachi
+# def get_karachi_time():
+#     karachi_timezone = pytz.timezone("Asia/Karachi")
+#     karachi_time = datetime.now(karachi_timezone)
+#     return karachi_time.strftime("%d-%m-%Y %H:%M:%S")  # Format: Date-Month-Year Hour:Minute:Second
+
+# # Inject custom CSS for stylish UI
+# st.markdown("""
+#     <style>
+#         /* Style for centering all text */
+#         .center-text {
+#             text-align: center;
+#             font-size: 32px;
+#             font-weight: bold;
+#             color: #4CAF50; /* Green color */
+#         }
+
+#         /* Button style */
+#         .red-button {
+#             background-color: #FF5733; /* Red color */
+#             color: white;
+#             padding: 12px 24px;
+#             font-size: 16px;
+#             border-radius: 8px;
+#             border: none;
+#             cursor: pointer;
+#             width: 250px;
+#             margin: 10px auto;
+#             display: block;
+#             text-align: center;
+#             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+#             transition: all 0.3s ease;
+#         }
+
+#         .red-button:hover {
+#             background-color: #e04e1b; /* Darker red */
+#             transform: translateY(-2px);
+#         }
+
+#         .red-button:active {
+#             background-color: #b64014; /* Even darker red */
+#             transform: translateY(2px);
+#         }
+
+#         /* Style for text input */
+#         .stTextInput input {
+#             text-align: center;
+#             font-size: 18px;
+#             padding: 12px;
+#             border-radius: 8px;
+#             border: 2px solid #ddd;
+#             width: 100%;
+#         }
+
+#         /* Centering title and headers */
+#         h1, h2, h3 {
+#             text-align: center;
+#             color: #333;
+#         }
+
+#         /* Styling for green section headers */
+#         .section-header {
+#             color: #4CAF50;
+#             font-weight: bold;
+#             text-align: center;
+#             font-size: 28px;  /* Larger size */
+#         }
+
+#         .section-header-password-strength {
+#             font-size: 34px;  /* Even larger size for Password Strength Meter */
+#         }
+
+#         /* Red color for the temperature section */
+#         .temp-section {
+#             color: red;
+#             font-weight: bold;
+#             text-align: center;
+#         }
+
+#         /* Red color for the time section */
+#         .time-section {
+#             color: red;
+#             font-weight: bold;
+#             text-align: center;
+#             font-size: 32px;
+#         }
+
+#         /* Footer style */
+#         .footer {
+#             text-align: center;
+#             color: #777;
+#             font-size: 14px;
+#             margin-top: 40px;
+#         }
+
+#         /* Progress bar color */
+#         .stProgress>div>div {
+#             background-color: #4CAF50; /* Green progress */
+#         }
+
+#         /* Style for code blocks */
+#         pre {
+#             background-color: #f7f7f7;
+#             padding: 15px;
+#             border-radius: 8px;
+#             border: 1px solid #ddd;
+#             font-size: 16px;
+#             color: #333;
+#         }
+
+#         /* Background color */
+#         body {
+#             background-color: #f1f1f1;
+#         }
+#     </style>
+# """, unsafe_allow_html=True)
+
+# # Centered Title
+# st.markdown('<div class="center-text">🔒 Password Manager</div>', unsafe_allow_html=True)
+
+# # Get current time in Karachi
+# karachi_time = get_karachi_time()
+
+# # Display Karachi time
+# st.markdown(f'<div class="time-section">Current Date and Time in Karachi: {karachi_time}</div>', unsafe_allow_html=True)
+
+# # Password Strength Checker
+# st.markdown('<div class="section-header section-header-password-strength">Password Strength Meter</div>', unsafe_allow_html=True)
+# password = st.text_input("Enter Password:", type="password")
+# if password:
+#     with st.spinner("Analyzing password strength..."):
+#         time.sleep(1.5)
+#     strength, score, feedback = check_password_strength(password)
+#     st.progress(score / 5)
+#     st.write(f"**Strength:** {strength}")  # Display result in UI
+#     if strength == "Strong":
+#         st.success("✅ Strong Password! Well done!")
+#         st.balloons()
+#     elif strength == "Moderate":
+#         st.warning("⚠️ Moderate Password! Consider improving it.")
+#     else:
+#         st.error("❌ Weak Password! Please improve your password security.")
+#     if feedback:
+#         st.write("🔹 Suggestions to Improve:")
+#         for tip in feedback:
+#             st.write(f"   - {tip}")
+
+#     # Save the password with its strength and timestamp to history after input
+#     st.session_state.password_history.append({
+#         "password": password,
+#         "strength": strength,
+#         "timestamp": karachi_time,
+#     })
+
+# # Secure Password Generator Section
+# st.markdown('<div class="section-header">Secure Password Generator</div>', unsafe_allow_html=True)
+# length = st.slider("Select Password Length:", min_value=8, max_value=32, value=12)
+# use_digits = st.checkbox("Include Numbers", value=True)
+# use_specials = st.checkbox("Include Special Characters", value=True)
+# use_upper = st.checkbox("Include Uppercase Letters", value=True)
+# use_lower = st.checkbox("Include Lowercase Letters", value=True)
+
+# # Generate Password Button
+# if st.button("Generate Password", key="generate_button", use_container_width=True, 
+#              help="Generate a strong password"):
+#     with st.spinner("Generating a secure password..."):
+#         time.sleep(1.5)
+#     new_password = generate_password(length, use_digits, use_specials, use_upper, use_lower)
+#     st.code(new_password, language="plaintext")
+#     st.session_state.generated_password = new_password  # Store the generated password
+
+#     # Store the password in session state history
+#     strength, score, feedback = check_password_strength(new_password)
+#     st.session_state.password_history.append({
+#         "password": new_password,
+#         "strength": strength,
+#         "timestamp": karachi_time,
+#     })
+    
+#     st.balloons()
+
+#     # Provide download link for the generated password
+#     password_file = f"{new_password}.txt"
+#     st.download_button(
+#         label="Download Password",
+#         data=new_password,
+#         file_name=password_file,
+#         mime="text/plain",
+#         use_container_width=True,
+#         key="download_button",
+#         help="Click to download your generated password"
+#     )
+
+# # Password History Section
+# st.markdown('<div class="section-header">📜 Password History</div>', unsafe_allow_html=True)
+# st.subheader("Stored Passwords")
+# max_history = st.number_input("Number of Passwords to Show:", min_value=1, max_value=100, value=10)
+
+# if st.session_state.password_history:
+#     for idx, entry in enumerate(reversed(st.session_state.password_history[-max_history:])):
+#         with st.expander(f"🔐 Password {idx + 1} - {entry['timestamp']}"):
+#             st.write(f"**Password:** `{entry['password']}`")
+#             st.write(f"**Strength:** {entry['strength']}")
+    
+#     # Clear History Button
+#     if st.button("Clear History", key="clear_history", use_container_width=True):
+#         st.session_state.password_history = []
+#         st.success("✅ Password history cleared!")
+#         st.rerun()
+# else:
+#     st.info("No password history available.")
+
+# # Footer
+# st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
+
+
+
 import streamlit as st
 import re
 import random
@@ -3651,6 +3933,7 @@ import time
 from cryptography.fernet import Fernet
 from datetime import datetime
 import pytz
+import requests  # Import requests for API call
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="🔒 Password Manager", layout="centered")
@@ -3714,6 +3997,26 @@ def get_karachi_time():
     karachi_time = datetime.now(karachi_timezone)
     return karachi_time.strftime("%d-%m-%Y %H:%M:%S")  # Format: Date-Month-Year Hour:Minute:Second
 
+# Function to get Karachi's weather
+def get_weather():
+    API_KEY = "ea815a44ac089b6f28d755bacec67f30"  # Replace with your actual API key
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    city = "Karachi"
+    complete_url = f"{base_url}q={city}&appid={API_KEY}&units=metric"  # Metric for Celsius
+
+    response = requests.get(complete_url)
+    data = response.json()
+    
+    if data["cod"] == 200:
+        main = data["main"]
+        weather = data["weather"][0]
+        temperature = main["temp"]
+        weather_desc = weather["description"]
+        humidity = main["humidity"]
+        return temperature, weather_desc, humidity
+    else:
+        return None, None, None
+
 # Inject custom CSS for stylish UI
 st.markdown("""
     <style>
@@ -3724,7 +4027,6 @@ st.markdown("""
             font-weight: bold;
             color: #4CAF50; /* Green color */
         }
-
         /* Button style */
         .red-button {
             background-color: #FF5733; /* Red color */
@@ -3741,17 +4043,14 @@ st.markdown("""
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
-
         .red-button:hover {
             background-color: #e04e1b; /* Darker red */
             transform: translateY(-2px);
         }
-
         .red-button:active {
             background-color: #b64014; /* Even darker red */
             transform: translateY(2px);
         }
-
         /* Style for text input */
         .stTextInput input {
             text-align: center;
@@ -3761,13 +4060,11 @@ st.markdown("""
             border: 2px solid #ddd;
             width: 100%;
         }
-
         /* Centering title and headers */
         h1, h2, h3 {
             text-align: center;
             color: #333;
         }
-
         /* Styling for green section headers */
         .section-header {
             color: #4CAF50;
@@ -3775,18 +4072,15 @@ st.markdown("""
             text-align: center;
             font-size: 28px;  /* Larger size */
         }
-
         .section-header-password-strength {
             font-size: 34px;  /* Even larger size for Password Strength Meter */
         }
-
         /* Red color for the temperature section */
         .temp-section {
             color: red;
             font-weight: bold;
             text-align: center;
         }
-
         /* Red color for the time section */
         .time-section {
             color: red;
@@ -3794,7 +4088,6 @@ st.markdown("""
             text-align: center;
             font-size: 32px;
         }
-
         /* Footer style */
         .footer {
             text-align: center;
@@ -3802,12 +4095,10 @@ st.markdown("""
             font-size: 14px;
             margin-top: 40px;
         }
-
         /* Progress bar color */
         .stProgress>div>div {
             background-color: #4CAF50; /* Green progress */
         }
-
         /* Style for code blocks */
         pre {
             background-color: #f7f7f7;
@@ -3817,7 +4108,6 @@ st.markdown("""
             font-size: 16px;
             color: #333;
         }
-
         /* Background color */
         body {
             background-color: #f1f1f1;
@@ -3833,6 +4123,13 @@ karachi_time = get_karachi_time()
 
 # Display Karachi time
 st.markdown(f'<div class="time-section">Current Date and Time in Karachi: {karachi_time}</div>', unsafe_allow_html=True)
+
+# Get and display Karachi weather
+temperature, weather_desc, humidity = get_weather()
+if temperature is not None:
+    st.markdown(f'<div class="temp-section">Current Weather in Karachi: {temperature}°C, {weather_desc.capitalize()}, Humidity: {humidity}%</div>', unsafe_allow_html=True)
+else:
+    st.markdown('<div class="temp-section">Failed to retrieve weather data.</div>', unsafe_allow_html=True)
 
 # Password Strength Checker
 st.markdown('<div class="section-header section-header-password-strength">Password Strength Meter</div>', unsafe_allow_html=True)
@@ -3922,6 +4219,7 @@ else:
 
 # Footer
 st.markdown('<div class="footer">Developed by Abdul Rehman | Built with ❤️ using Streamlit | Secure Passwords Matter! 🔒</div>', unsafe_allow_html=True)
+
 
 
 
